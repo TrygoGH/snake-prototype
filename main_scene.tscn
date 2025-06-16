@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://b53kbllfyfh5y"]
+
+[ext_resource type="Script" uid="uid://bqmvlnvy3c4qs" path="res://TickManager.gd" id="1_2c62f"]
+[ext_resource type="Script" uid="uid://bi11n0wa1lur4" path="res://SystemsController.gd" id="1_nfk4m"]
+[ext_resource type="Script" uid="uid://bg2ujc636vv7h" path="res://GridManager.gd" id="2_d5x1h"]
+[ext_resource type="Script" uid="uid://c1yic4euhjbnm" path="res://TimeTickScaler.gd" id="2_gyfs4"]
+[ext_resource type="Script" uid="uid://btng4xuqb26rr" path="res://GameManager.gd" id="4_nfk4m"]
+[ext_resource type="Script" uid="uid://kfg8ao4klebb" path="res://GridNode.gd" id="5_nfk4m"]
+[ext_resource type="Script" uid="uid://30fdj3flby20" path="res://LifeCycleManager.gd" id="6_66tet"]
+[ext_resource type="Script" uid="uid://chq6chfvxa7ti" path="res://Snake.gd" id="7_7ycvg"]
+
+[node name="Node2D" type="Node2D"]
+process_mode = 3
+
+[node name="Systems" type="Node2D" parent="." node_paths=PackedStringArray("systems")]
+script = ExtResource("1_nfk4m")
+systems = [NodePath("In-Game/GridManager"), NodePath("In-Game/DifficultyManager"), NodePath("In-Game/DifficultyManager"), NodePath("Node/LifecycleManager")]
+
+[node name="In-Game" type="Node" parent="Systems"]
+process_mode = 1
+
+[node name="CameraManager" type="Node2D" parent="Systems/In-Game"]
+
+[node name="Camera2D" type="Camera2D" parent="Systems/In-Game/CameraManager"]
+offset = Vector2(128, 128)
+zoom = Vector2(2, 2)
+
+[node name="TickManager" type="Node" parent="Systems/In-Game" node_paths=PackedStringArray("lifecycle_manager") groups=["managers"]]
+script = ExtResource("1_2c62f")
+lifecycle_manager = NodePath("../../Node/LifecycleManager")
+
+[node name="GridManager" type="Node" parent="Systems/In-Game" groups=["managers"]]
+process_mode = 1
+script = ExtResource("2_d5x1h")
+
+[node name="DifficultyManager" type="Node" parent="Systems/In-Game" node_paths=PackedStringArray("timer") groups=["managers"]]
+script = ExtResource("2_gyfs4")
+timer = NodePath("Timer")
+
+[node name="Timer" type="Timer" parent="Systems/In-Game/DifficultyManager"]
+process_callback = 0
+
+[node name="GameManager" type="Node" parent="Systems/In-Game"]
+script = ExtResource("4_nfk4m")
+metadata/_custom_type_script = "uid://btng4xuqb26rr"
+
+[node name="Node" type="Node" parent="Systems"]
+
+[node name="LifecycleManager" type="Node" parent="Systems/Node"]
+script = ExtResource("6_66tet")
+
+[node name="World" type="Node2D" parent="." groups=["world"]]
+process_mode = 1
+
+[node name="Snake" type="Node2D" parent="World"]
+script = ExtResource("7_7ycvg")
+
+[node name="Environment" type="Node2D" parent="World"]
+
+[node name="GridNode" type="Node2D" parent="World/Environment" groups=["world"]]
+script = ExtResource("5_nfk4m")
+
+[connection signal="increase_speed" from="Systems/In-Game/DifficultyManager" to="Systems/In-Game/TickManager" method="_on_difficulty_manager_increase_speed"]

@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=3 uid="uid://b53kbllfyfh5y"]
+
+[ext_resource type="Script" uid="uid://bd5p327juu23v" path="res://HeadModel.gd" id="1_0f027"]
+[ext_resource type="Script" uid="uid://bqmvlnvy3c4qs" path="res://TickManager.gd" id="1_2c62f"]
+[ext_resource type="Script" uid="uid://bg2ujc636vv7h" path="res://GridManager.gd" id="2_d5x1h"]
+[ext_resource type="Script" uid="uid://c1yic4euhjbnm" path="res://TimeTickScaler.gd" id="2_gyfs4"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0f027"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_2c62f"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_gyfs4"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Systems" type="Node2D" parent="."]
+
+[node name="Cameras" type="Node2D" parent="Systems"]
+
+[node name="Camera2D" type="Camera2D" parent="Systems/Cameras"]
+
+[node name="TickManager" type="Node2D" parent="Systems"]
+script = ExtResource("1_2c62f")
+
+[node name="GridManager" type="Node" parent="Systems"]
+script = ExtResource("2_d5x1h")
+
+[node name="DifficultyManager" type="Node2D" parent="Systems" node_paths=PackedStringArray("timer")]
+script = ExtResource("2_gyfs4")
+timer = NodePath("Timer")
+
+[node name="Timer" type="Timer" parent="Systems/DifficultyManager"]
+process_callback = 0
+
+[node name="Node2D" type="Node2D" parent="Systems"]
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Player" type="Node2D" parent="World"]
+
+[node name="Model" type="Node2D" parent="World/Player"]
+
+[node name="Head" type="Node2D" parent="World/Player/Model"]
+material = SubResource("CanvasItemMaterial_0f027")
+script = ExtResource("1_0f027")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="World/Player/Model/Head"]
+material = SubResource("CanvasItemMaterial_2c62f")
+use_parent_material = true
+scale = Vector2(16, 16)
+mesh = SubResource("QuadMesh_gyfs4")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="World/Player/Model/Head"]
+visible = false
+scale = Vector2(16, 16)
+color = Color(0, 1, 0, 1)
+
+[node name="Body" type="Node2D" parent="World/Player/Model"]
+
+[node name="Environment" type="Node2D" parent="World"]
+
+[node name="TileMap" type="TileMap" parent="World/Environment"]
+format = 2
+
+[connection signal="tick" from="Systems/TickManager" to="World/Player/Model/Head" method="_on_tick"]
+[connection signal="increase_speed" from="Systems/DifficultyManager" to="Systems/TickManager" method="_on_difficulty_manager_increase_speed"]

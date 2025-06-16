@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=3 uid="uid://b53kbllfyfh5y"]
+
+[ext_resource type="Script" uid="uid://bd5p327juu23v" path="res://HeadModel.gd" id="1_0f027"]
+[ext_resource type="Script" uid="uid://bqmvlnvy3c4qs" path="res://TickManager.gd" id="1_2c62f"]
+[ext_resource type="Script" uid="uid://bg2ujc636vv7h" path="res://GridManager.gd" id="2_d5x1h"]
+[ext_resource type="Script" uid="uid://c1yic4euhjbnm" path="res://TimeTickScaler.gd" id="2_gyfs4"]
+[ext_resource type="Script" uid="uid://30fdj3flby20" path="res://GameManager.gd" id="4_nfk4m"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_2c62f"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_gyfs4"]
+
+[node name="Node2D" type="Node2D"]
+process_mode = 3
+
+[node name="Systems" type="Node2D" parent="."]
+
+[node name="In-Game" type="Node" parent="Systems"]
+process_mode = 1
+
+[node name="Cameras" type="Node2D" parent="Systems/In-Game"]
+
+[node name="Camera2D" type="Camera2D" parent="Systems/In-Game/Cameras"]
+
+[node name="TickManager" type="Node2D" parent="Systems/In-Game"]
+script = ExtResource("1_2c62f")
+
+[node name="GridManager" type="Node" parent="Systems/In-Game"]
+process_mode = 1
+script = ExtResource("2_d5x1h")
+
+[node name="DifficultyManager" type="Node2D" parent="Systems/In-Game" node_paths=PackedStringArray("timer")]
+script = ExtResource("2_gyfs4")
+timer = NodePath("Timer")
+
+[node name="Timer" type="Timer" parent="Systems/In-Game/DifficultyManager"]
+process_callback = 0
+
+[node name="Node2D" type="Node2D" parent="Systems/In-Game"]
+
+[node name="GameManager" type="Node2D" parent="Systems/In-Game" node_paths=PackedStringArray("nodes_to_wait_for")]
+script = ExtResource("4_nfk4m")
+nodes_to_wait_for = [NodePath("../DifficultyManager"), NodePath("../GridManager"), NodePath("../TickManager")]
+
+[node name="World" type="Node2D" parent="."]
+process_mode = 1
+
+[node name="Player" type="Node2D" parent="World"]
+
+[node name="Model" type="Node2D" parent="World/Player"]
+
+[node name="Head" type="Node2D" parent="World/Player/Model"]
+script = ExtResource("1_0f027")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="World/Player/Model/Head"]
+material = SubResource("CanvasItemMaterial_2c62f")
+use_parent_material = true
+scale = Vector2(16, 16)
+mesh = SubResource("QuadMesh_gyfs4")
+
+[node name="Body" type="Node2D" parent="World/Player/Model"]
+
+[node name="Environment" type="Node2D" parent="World"]
+
+[connection signal="tick" from="Systems/In-Game/TickManager" to="World/Player/Model/Head" method="_on_tick"]
+[connection signal="increase_speed" from="Systems/In-Game/DifficultyManager" to="Systems/In-Game/TickManager" method="_on_difficulty_manager_increase_speed"]
