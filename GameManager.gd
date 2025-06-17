@@ -3,6 +3,7 @@ class_name GameManager
 
 signal snake_ate_food
 signal game_over
+signal start
 
 @export var snake: Snake
 var snake_pos: Vector2i
@@ -18,6 +19,7 @@ func _start():
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 			Engine.time_scale = 1
+			start.emit()
 
 func _tick(float):
 	snake._move_head()

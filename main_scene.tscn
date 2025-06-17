@@ -63,7 +63,7 @@ metadata/_custom_type_script = "uid://chq6chfvxa7ti"
 [node name="GridNode" type="Node2D" parent="World/Environment" groups=["world"]]
 script = ExtResource("5_nfk4m")
 
-[node name="UI" type="Control" parent="." node_paths=PackedStringArray("score_ui", "game_over_text")]
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("score_ui", "game_over_text", "start_text")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -71,6 +71,7 @@ offset_bottom = 40.0
 script = ExtResource("9_7ycvg")
 score_ui = NodePath("Score")
 game_over_text = NodePath("Game Over")
+start_text = NodePath("Press to start")
 
 [node name="Score" type="Label" parent="UI"]
 layout_mode = 0
@@ -85,5 +86,13 @@ offset_top = 117.0
 offset_right = 172.0
 offset_bottom = 140.0
 text = "GAME OVER"
+
+[node name="Press to start" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 99.0
+offset_right = 203.0
+offset_bottom = 122.0
+text = "Press any key to start"
 
 [connection signal="increase_speed" from="Systems/In-Game/DifficultyManager" to="Systems/In-Game/TickManager" method="_on_difficulty_manager_increase_speed"]
