@@ -30,6 +30,7 @@ func _tick(float):
 	if _check_snake_oob():
 		is_game_over = true
 		Engine.time_scale = 0
+		get_tree().paused = true
 		game_over.emit()
 		
 	
