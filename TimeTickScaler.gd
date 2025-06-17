@@ -10,10 +10,14 @@ func _ready() -> void:
 func _setup():
 	timer.start()
 	
+func _start():
+	Systems.game_manager.snake_ate_food.connect(
+		func(): 
+			_increase_difficulty()
+	)
+	
 func _increase_difficulty():
-	if(timer.wait_time > 1):
-		timer.wait_time -= 1
 	increase_speed.emit()
 
 func _on_timer_timeout():
-	_increase_difficulty()
+	pass

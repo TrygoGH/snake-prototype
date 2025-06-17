@@ -5,7 +5,7 @@ signal initialized
 
 @export var _tps: int = 1
 @export var lifecycle_manager: LifeCycleManager
-var tick_rate := 1.0 / _tps
+@onready var tick_rate := 1.0 / _tps
 var _max_tps := 60
 var _currentTick := 0.0
 var currentTick := 0
@@ -13,6 +13,7 @@ var oldTick := -1
 var test = 0
 
 func _ready():
+	tick_rate = 1.0 / _tps
 	pass
 
 func _physics_process(delta):

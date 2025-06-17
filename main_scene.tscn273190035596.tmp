@@ -28,7 +28,7 @@ zoom = Vector2(2, 2)
 
 [node name="TickManager" type="Node" parent="Systems/In-Game" node_paths=PackedStringArray("lifecycle_manager") groups=["managers"]]
 script = ExtResource("1_2c62f")
-_tps = 2
+_tps = 10
 lifecycle_manager = NodePath("../../Node/LifecycleManager")
 
 [node name="GridManager" type="Node" parent="Systems/In-Game" groups=["managers"]]
@@ -63,27 +63,17 @@ metadata/_custom_type_script = "uid://chq6chfvxa7ti"
 [node name="GridNode" type="Node2D" parent="World/Environment" groups=["world"]]
 script = ExtResource("5_nfk4m")
 
-[node name="UI" type="Control" parent="." node_paths=PackedStringArray("score_ui", "game_over_text")]
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("score_ui")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("9_7ycvg")
 score_ui = NodePath("Score")
-game_over_text = NodePath("Game Over")
 
 [node name="Score" type="Label" parent="UI"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
-
-[node name="Game Over" type="Label" parent="UI"]
-visible = false
-layout_mode = 0
-offset_left = 80.0
-offset_top = 117.0
-offset_right = 172.0
-offset_bottom = 140.0
-text = "GAME OVER"
 
 [connection signal="increase_speed" from="Systems/In-Game/DifficultyManager" to="Systems/In-Game/TickManager" method="_on_difficulty_manager_increase_speed"]
