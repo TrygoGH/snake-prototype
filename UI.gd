@@ -1,3 +1,5 @@
+## Manages the game's UI labels for score, highscore, game state messages, and context instructions.
+## Updates the UI dynamically based on game events like starting, scoring, and game over.
 extends Control
 
 @export var score_label: Label
@@ -6,6 +8,7 @@ extends Control
 @export var context_label: Label
 
 func _ready():
+	## Initial UI setup before the game starts
 	score_label.text = "Press any key to start"
 	context_label.text = ""
 	main_label.visible = true
@@ -17,6 +20,7 @@ func _ready():
 	update_score()
 
 func _start():
+	## Connect signals from the GameManager to update UI accordingly
 	Systems.game_manager.snake_ate_food.connect(
 		func(): 
 			update_score()
@@ -24,15 +28,16 @@ func _start():
 	Systems.game_manager.game_over.connect(
 		func(): 
 			game_over()
-			
 	)
 	Systems.game_manager.start.connect(
 		func(): 
 			main_label.visible = false
 	)
-func _process(delta):
-	pass
 
+func _process(delta):
+	pass  # No per-frame updates needed currently
+
+## Update the score and highscore labels based on the current game type and score
 func update_score():
 	var text: String = ""
 	var gd = Systems.game_data
@@ -47,6 +52,7 @@ func update_score():
 	score_label.text = text
 	highscore_label.text = str("highscore: ", gd.highscore)
 	
+## Update the main and context labels based on the game over state and game type
 func game_over():
 	const lose_text: Dictionary[String, String] = {
 		"main": "YOU LOST",
@@ -78,7 +84,6 @@ func game_over():
 			text = lose_text.main
 			context_text = lose_text.context
 			
-	print(main_label)
 	main_label.text = text
 	context_label.text = context_text
 	main_label.visible = true

@@ -2,21 +2,25 @@ extends Node2D
 class_name GridNode
 
 var grid_size: Vector2i
+
 var type_colors := {
 	Cell.Types.EMPTY: Color(0.1, 0.1, 0.1, 0.5),  # dark gray
-	Cell.Types.HEAD: Color(0.2, 0.8, 0.2, 1),   # green
-	Cell.Types.TAIL: Color(0.1, 0.5, 0.1, 1),   # darker green
-	Cell.Types.APPLE: Color(1, 0.2, 0.2, 1),    # red
-	Cell.Types.BODY: Color(0.1, 0.5, 0.1, 1),    # red
+	Cell.Types.HEAD: Color(0.2, 0.8, 0.2, 1),    # green
+	Cell.Types.TAIL: Color(0.1, 0.5, 0.1, 1),    # darker green
+	Cell.Types.APPLE: Color(1, 0.2, 0.2, 1),     # red
+	Cell.Types.BODY: Color(0.1, 0.5, 0.1, 1),    # green (same as tail for now)
 }
+
 var cellnodes: Array[CellNode]
 
+## Returns the display color associated with a given cell type
 func get_color_for_type(t: Cell.Types) -> Color:
 	return type_colors.get(t, Color(1, 1, 1))  # fallback to white
-	
+
 func _ready():
 	pass
-	
+
+## Instantiates a CellNode, positions it in world space, and sets its visual color
 func _create_cell_node(cell: Cell):
 	var grid = Systems.grid_manager.grid
 	var size = Systems.grid_manager.cell_size
@@ -26,12 +30,14 @@ func _create_cell_node(cell: Cell):
 	cellnode.position = position
 	cellnode.modulate = get_color_for_type(cellnode.cell.type)
 	return cellnode
-	
+
+## Called to initialize the grid node system and begin rendering cells
 func _start():
 	grid_size = Systems.grid_manager.grid_size
 	_init_cells()
 	print("STARTINGG")
-	
+
+## Iterates through all grid cells, creates visual CellNode instances, and adds them as children
 func _init_cells():
 	var grid = Systems.grid_manager.grid
 	var position = Vector2i(0,0)
@@ -44,9 +50,11 @@ func _init_cells():
 			cellnodes.append(cellnode)
 			add_child(cellnode)
 
+## Updates the visual color of each cell node to reflect its current logical state
 func _update_cellnodes():
 	for cellnode in cellnodes:
 		cellnode.modulate = get_color_for_type(cellnode.cell.type)
 
+## Called each frame or tick; updates the visuals of the cell nodes
 func _tick(delta):
 	_update_cellnodes()
