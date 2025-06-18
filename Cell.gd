@@ -6,6 +6,7 @@ enum Types {
 	HEAD,
 	TAIL,
 	APPLE,
+	BODY,
 }
 
 var type: Types = Types.EMPTY

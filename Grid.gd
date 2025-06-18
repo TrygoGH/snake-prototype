@@ -41,4 +41,3 @@ func clear(value: Cell.Types = Cell.Types.EMPTY) -> void:
 	for vector in vectors:
 		for i in range(vector.length):
 			vector.get_cell(i).set_type(value)
-			

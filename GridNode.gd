@@ -7,6 +7,7 @@ var type_colors := {
 	Cell.Types.HEAD: Color(0.2, 0.8, 0.2, 1),   # green
 	Cell.Types.TAIL: Color(0.1, 0.5, 0.1, 1),   # darker green
 	Cell.Types.APPLE: Color(1, 0.2, 0.2, 1),    # red
+	Cell.Types.BODY: Color(0.1, 0.5, 0.1, 1),    # red
 }
 var cellnodes: Array[CellNode]
 

@@ -1,7 +1,10 @@
 extends Node2D
 class_name Snake
 var head_pos := Vector2i(8, 8)
+var previous_head_pos := head_pos
 var head_dir := Vector2i.ZERO
+var length := 1
+var positions: Array[Vector2i] = [head_pos]
 enum directions{
 	RIGHT,
 	LEFT,
@@ -28,7 +31,7 @@ func _start():
 func _tick(delt):
 	pass
 
-func _move_head():
+func move_head():
 	var newDirection = direction_vectors.UP
 	match last_dir:
 		directions.UP:
@@ -40,10 +43,34 @@ func _move_head():
 		directions.RIGHT:
 			newDirection = direction_vectors.RIGHT
 	
-	Systems.grid_manager.set_cell(Cell.Types.EMPTY, head_pos)
+	previous_head_pos = head_pos
 	head_pos += newDirection
-	Systems.grid_manager.set_cell(Cell.Types.HEAD, head_pos)
-		
+
+func move_snake():
+	move_head()
+	move_body()
+	update_head_position()
+	
+func move_body():
+	var max_index = positions.size() - 1
+	for i in max_index:
+		positions[max_index - i] = positions[max_index - i - 1]
+
+func update_head_position():
+	positions[0] = head_pos
+	
+func draw():
+	var grid_manager = Systems.grid_manager
+	if positions.size() > 1:
+		for position in positions:
+			grid_manager.set_cell(Cell.Types.BODY, position)
+	grid_manager.set_cell(Cell.Types.HEAD, head_pos)
+
+func add_body_part():
+	positions.append(Vector2i(previous_head_pos))
+	print("snake pos: ", positions)
+	length = positions.size()
+	
 func _turn_head_event_handler(event: InputEventKey):
 	if event.keycode == KEY_UP and not event.keycode == last_key:
 		last_key = event.keycode

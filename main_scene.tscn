@@ -8,14 +8,14 @@
 [ext_resource type="Script" uid="uid://kfg8ao4klebb" path="res://GridNode.gd" id="5_nfk4m"]
 [ext_resource type="Script" uid="uid://30fdj3flby20" path="res://LifeCycleManager.gd" id="6_66tet"]
 [ext_resource type="Script" uid="uid://chq6chfvxa7ti" path="res://Snake.gd" id="7_7ycvg"]
-[ext_resource type="Script" uid="uid://cssjym6ukvbek" path="res://UI.gd" id="9_7ycvg"]
+[ext_resource type="Script" path="res://UI.gd" id="9_7ycvg"]
 
 [node name="Node2D" type="Node2D"]
 process_mode = 3
 
 [node name="Systems" type="Node2D" parent="." node_paths=PackedStringArray("systems")]
 script = ExtResource("1_nfk4m")
-systems = [NodePath("In-Game/GridManager"), NodePath("In-Game/DifficultyManager"), NodePath("Node/LifecycleManager"), NodePath("In-Game/GameManager")]
+systems = [NodePath("In-Game/GridManager"), NodePath("In-Game/DifficultyManager"), NodePath("Node/LifecycleManager"), NodePath("In-Game/GameManager"), NodePath("In-Game/CameraManager"), NodePath("In-Game/TickManager")]
 
 [node name="In-Game" type="Node" parent="Systems"]
 process_mode = 1
@@ -26,10 +26,9 @@ process_mode = 1
 offset = Vector2(128, 128)
 zoom = Vector2(2, 2)
 
-[node name="TickManager" type="Node" parent="Systems/In-Game" node_paths=PackedStringArray("lifecycle_manager") groups=["managers"]]
+[node name="TickManager" type="Node" parent="Systems/In-Game" groups=["managers"]]
 script = ExtResource("1_2c62f")
 _tps = 2
-lifecycle_manager = NodePath("../../Node/LifecycleManager")
 
 [node name="GridManager" type="Node" parent="Systems/In-Game" groups=["managers"]]
 process_mode = 1
@@ -85,7 +84,8 @@ offset_left = 80.0
 offset_top = 117.0
 offset_right = 172.0
 offset_bottom = 140.0
-text = "GAME OVER"
+text = "GAME OVER
+Press R to restart"
 
 [node name="Press to start" type="Label" parent="UI"]
 layout_mode = 0

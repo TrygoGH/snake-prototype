@@ -2,6 +2,9 @@ extends Node
 
 var grid_manager: GridManager
 var game_manager: GameManager
+var tick_manager: TickManager
+var lifecycle_manager: LifeCycleManager
+
 var _systems: Dictionary[String, Node]
 
 func init():
@@ -18,6 +21,8 @@ func get_system(systemName: String):
 func _check_set_globals():
 	grid_manager = get_system_of_type(GridManager)
 	game_manager = get_system_of_type(GameManager)
+	tick_manager = get_system_of_type(TickManager)
+	lifecycle_manager = get_system_of_type(LifeCycleManager)
 	
 func get_system_of_type(target_type: Object):
 	for system in _systems.values():

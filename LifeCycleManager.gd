@@ -23,6 +23,13 @@ func _ready():
 		_add_node_lifecycles(node)
 	_start_lifecycle_methods.call_deferred()
 
+func _physics_process(delta: float) -> void:
+	var tick_manager = Systems.tick_manager
+	tick_manager.update_tick(delta)
+	var ticks = tick_manager.calculate_ticks()
+	for i in ticks:
+		_call_tick(delta)
+		
 func _start_lifecycle_methods():
 	_call_setup()
 	_call_start()

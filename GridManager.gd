@@ -34,4 +34,6 @@ func get_cell(position: Vector2i) -> Cell:
 	var cell = grid.get_cell(position)
 	print(cell)
 	return cell
-	
+
+func clear_grid():
+	grid.clear()

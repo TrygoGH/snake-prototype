@@ -1,10 +1,10 @@
 extends Node
+class_name TickManager
 
 signal tick
 signal initialized
 
 @export var _tps: int = 1
-@export var lifecycle_manager: LifeCycleManager
 @onready var tick_rate := 1.0 / _tps
 var _max_tps := 60
 var _currentTick := 0.0
@@ -15,19 +15,11 @@ var test = 0
 func _ready():
 	tick_rate = 1.0 / _tps
 	pass
-
-func _physics_process(delta):
-	if test > 0:
-		_call_tick(delta)
-	test += 1
 	
-func _call_tick(delta):
+func update_tick(delta):
+	oldTick = currentTick
 	_currentTick += (delta/tick_rate)
 	currentTick = floor(_currentTick)
-	while currentTick > oldTick:
-		oldTick += 1
-		lifecycle_manager.call_tick(delta)
-	oldTick = currentTick
 	
 func _setup():
 	print(tick_rate)
@@ -41,3 +33,6 @@ func _on_difficulty_manager_increase_speed() -> void:
 	
 func _calculate_tick_rate(tps):
 	return 1.0 / tps
+	
+func calculate_ticks() -> int:
+	return currentTick - oldTick
