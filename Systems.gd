@@ -4,16 +4,19 @@ var grid_manager: GridManager
 var game_manager: GameManager
 var tick_manager: TickManager
 var lifecycle_manager: LifeCycleManager
+var systems_manager: SystemsManager
 
 var _systems: Dictionary[String, Node]
 
 func init():
-	_check_set_globals()
+	pass
 	
 func add_system(node: Node):
+	print(node)
 	if not is_instance_valid(node):
 		return
 	_systems.set(node.name, node)
+	_check_set_globals()
 
 func get_system(systemName: String):
 	return _systems.get(systemName)
@@ -29,3 +32,7 @@ func get_system_of_type(target_type: Object):
 		if system.get_script() == target_type:
 				return system
 	return null
+
+func clear():
+	_systems.clear()
+	_check_set_globals()
