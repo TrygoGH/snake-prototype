@@ -8,9 +8,19 @@ signal start
 @export var snake: Snake
 var food_pos: Vector2i
 var previous_head_pos: Vector2i
+var game_started := false
 var is_game_over := false
 
+func _ready():
+	game_started = false
+	is_game_over = false
+	var gd = Systems.game_data
+	gd.score = 0
+	
 func _setup():
+	game_started = false
+	is_game_over = false
+	_init_target_score()
 	Engine.time_scale = 0
 
 func _start():
@@ -18,6 +28,8 @@ func _start():
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
+		if not game_started:
+			game_started = true
 			Engine.time_scale = 1
 			start.emit()
 
@@ -27,6 +39,7 @@ func _tick(float):
 	snake.move_snake()
 	snake.draw()
 	if snake.head_pos == food_pos:
+		increase_score(1)
 		snake_ate_food.emit()
 		snake.add_body_part()
 		print(snake.positions)
@@ -41,7 +54,9 @@ func _tick(float):
 	print(_check_back_turn())
 	if _check_back_turn():
 		_game_over()
-		
+	
+	if _check_target_score_reached():
+		_game_over()
 	previous_head_pos = snake.previous_head_pos
 
 func _draw_food():
@@ -81,6 +96,29 @@ func _check_snake_self_collision():
 		if position == snake.head_pos:
 			return true
 	return false
+
+func _check_target_score_reached() -> bool:
+	var gd = Systems.game_data
+	if gd.target_score <= 0:
+		return false
+	return gd.score >= gd.target_score
+	
+func _set_target_score(target: int):
+	var gd = Systems.game_data
+	gd.target_score = target
+
+func _init_target_score():
+	var target = 0
+	var gd = Systems.game_data
+	match gd.game_type:
+		GameData.game_types.ENDLESS:
+			pass
+		GameData.game_types.SCORE_20:
+			target = 20
+		_:
+			pass
+			
+	_set_target_score(target)
 	
 func _check_back_turn():
 	print("presv", previous_head_pos, snake.head_pos)
@@ -91,10 +129,33 @@ func _check_back_turn():
 func _input(event):
 	if event.is_action_pressed("reload_game"):
 		_handle_reload(event)
+	if event.is_action_pressed("ui_cancel"):
+			_main_menu()
 		
 func _handle_reload(event):
 	if is_game_over:
 		_reload_game()
 		
 func _reload_game():
-	get_tree().reload_current_scene()
+	var sm = Systems.scene_manager
+	sm.switch_scenes(sm.game)
+
+
+func _main_menu():
+	if not is_game_over:
+		return
+		
+	var sm = Systems.scene_manager
+	sm.switch_scenes(sm.main_menu)
+
+func increase_score(amount):
+	var gd = Systems.game_data
+	gd.score += amount
+	match gd.game_type:
+		GameData.game_types.ENDLESS:
+			gd.set_highscore(gd.score)
+		GameData.game_types.SCORE_20:
+			pass
+		_:
+			pass
+			

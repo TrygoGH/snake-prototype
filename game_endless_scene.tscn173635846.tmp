@@ -61,66 +61,29 @@ metadata/_custom_type_script = "uid://chq6chfvxa7ti"
 [node name="GridNode" type="Node2D" parent="World/Environment" groups=["world"]]
 script = ExtResource("5_nfk4m")
 
-[node name="UI" type="Control" parent="." node_paths=PackedStringArray("score_label", "main_label", "highscore_label", "context_label")]
+[node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("9_7ycvg")
-score_label = NodePath("CanvasLayer/Control/Score")
-main_label = NodePath("CanvasLayer/Control/GridContainer/Main")
-highscore_label = NodePath("CanvasLayer/Control/Highscore")
-context_label = NodePath("CanvasLayer/Control/GridContainer/Context")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="UI"]
-
-[node name="Control" type="Control" parent="UI/CanvasLayer"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Score" type="Label" parent="UI/CanvasLayer/Control"]
+[node name="Score" type="Label" parent="UI"]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
-scale = Vector2(2, 2)
 
-[node name="Highscore" type="Label" parent="UI/CanvasLayer/Control"]
-visible = false
-layout_direction = 2
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -1.0
+[node name="Label" type="Label" parent="UI"]
+layout_mode = 0
+offset_right = 40.0
 offset_bottom = 23.0
-grow_horizontal = 0
-scale = Vector2(2, 2)
-pivot_offset = Vector2(150, 0)
-horizontal_alignment = 2
 
-[node name="GridContainer" type="GridContainer" parent="UI/CanvasLayer/Control"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -83.0
-offset_top = -25.0
-offset_right = 83.0
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Main" type="Label" parent="UI/CanvasLayer/Control/GridContainer"]
-layout_mode = 2
-text = "Press any key to start"
-
-[node name="Context" type="Label" parent="UI/CanvasLayer/Control/GridContainer"]
-layout_mode = 2
+[node name="Press to start" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 99.0
+offset_right = 203.0
+offset_bottom = 122.0
 text = "Press any key to start"
 
 [connection signal="increase_speed" from="Systems/In-Game/DifficultyManager" to="Systems/In-Game/TickManager" method="_on_difficulty_manager_increase_speed"]

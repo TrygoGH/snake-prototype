@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3 uid="uid://dnhquqn3cwygk"]
+
+[ext_resource type="Texture2D" uid="uid://bk5xdpl8vemfi" path="res://Bijlage 2 - Logos/Bijlage 2 - Logo - onder..png" id="1_2glrg"]
+[ext_resource type="Script" uid="uid://mh2jast4swr" path="res://intro_scene.gd" id="1_o8unc"]
+[ext_resource type="Texture2D" uid="uid://dvh587627bsm" path="res://Bijlage 2 - Logos/Bijlage 2 - Logo zonder text.png" id="2_o8unc"]
+[ext_resource type="Texture2D" uid="uid://bltghskrqxd6c" path="res://Bijlage 2 - Logos/Bijlage 2 - Logo.png" id="3_b1u3c"]
+
+[node name="IntroScene" type="Node2D"]
+script = ExtResource("1_o8unc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Logo" type="Control" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/Logo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_2glrg")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Control/Logo"]
+visible = false
+layout_mode = 0
+offset_left = -2363.0
+offset_top = 155.0
+offset_right = -579.0
+offset_bottom = 1945.0
+texture = ExtResource("2_o8unc")
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Control/Logo"]
+visible = false
+layout_mode = 0
+offset_left = 928.0
+offset_top = 40.0
+offset_right = 2712.0
+offset_bottom = 1830.0
+texture = ExtResource("3_b1u3c")
+
+[node name="Slogan" type="Control" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 400.0
+offset_bottom = 400.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Slogan"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Wij lanceren je de toekomst in!"

@@ -5,6 +5,8 @@ var game_manager: GameManager
 var tick_manager: TickManager
 var lifecycle_manager: LifeCycleManager
 var systems_manager: SystemsManager
+var scene_manager: SceneManager
+var game_data: GameData
 
 var _systems: Dictionary[String, Node]
 
@@ -26,6 +28,9 @@ func _check_set_globals():
 	game_manager = get_system_of_type(GameManager)
 	tick_manager = get_system_of_type(TickManager)
 	lifecycle_manager = get_system_of_type(LifeCycleManager)
+	scene_manager = get_system_of_type(SceneManager)
+	systems_manager = get_system_of_type(SystemsManager)
+	game_data = get_system_of_type(GameData)
 	
 func get_system_of_type(target_type: Object):
 	for system in _systems.values():
